@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Google Indexing API Dashboard</title>
+  <style>
+    body { font-family: Arial; padding: 40px; background: #f5f5f5; }
+    input, button { padding: 10px; margin: 10px 0; width: 100%; }
+    #response { white-space: pre-wrap; background: #fff; padding: 10px; }
+  </style>
+</head>
+<body>
+  <h2>🧠 Google URL Indexer</h2>
+  <input type="text" id="url" placeholder="Enter URL to index" />
+  <button onclick="submitUrl()">Submit to Google Indexing API</button>
+  <div id="response"></div>
+
+  <script>
+    async function submitUrl() {
+      const url = document.getElementById("url").value;
+      const resBox = document.getElementById("response");
+      resBox.textContent = "Submitting...";
+
+      try {
+        const res = await fetch("/index-url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url }),
+        });
+
+        const data = await res.json();
+        resBox.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        resBox.textContent = "Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
